@@ -6,7 +6,7 @@ Exercise your right to privacy without sacrificing modern-day digital comfort.
 
 Article 12 of the [UN human rights](https://www.un.org/en/about-us/universal-declaration-of-human-rights) states:
 
-> > No one shall be subjected to arbitrary interference with ~his~ their privacy, family, home or correspondence, nor to attacks upon his honour and reputation. Everyone has the right to the protection of the law against such interference or attacks.
+> No one shall be subjected to arbitrary interference with ~his~ _their_ privacy, family, home or correspondence, nor to attacks upon his honour and reputation. Everyone has the right to the protection of the law against such interference or attacks.
 
 We believe that nowadays the right to privacy is heavily infringed upon by companies that have an interest in advertising and entertainment. According to some sources, these companies can predict your behaviour better than people that are closest to you by analizing the data that is collected while the service is used.
 
