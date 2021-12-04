@@ -24,6 +24,17 @@
 
 <header>
   <h1>PinPon</h1>
+  <form>
+    <label for="shelf-location">Shelfcopy location</label>
+    <input type="text" id="shelf-location" />
+    <br />
+
+    <label for="shelf-location">Decryption key</label>
+    <input type="text" id="shelf-location" />
+    <br />
+
+    <input type="submit" value="Go" />
+  </form>
 </header>
 <main>
   {#each posts as post}
