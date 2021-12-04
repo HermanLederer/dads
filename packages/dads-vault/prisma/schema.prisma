@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Vault {
+  id      Int     @id @default(autoincrement())
+  shelves Shelf[]
+
+  @@map(name: "vault")
+}
+
+model Shelf {
+  id         String   @id
+  content    String   @db.VarChar(1023)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  vault    Vault @relation(fields: [vault_id], references: [id])
+  vault_id Int
+
+  @@map(name: "shelf")
+}

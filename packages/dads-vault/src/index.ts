@@ -1,12 +1,38 @@
 import express from "express";
+import { PrismaClient } from "@prisma/client";
 
 const app = express();
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.status(200).send("success!");
-  console.log(1);
+const prisma = new PrismaClient();
+
+// Get all valults
+app.get("/vaults/", async (req, res) => {
+  const vaults = await prisma.vault.findMany({
+    select: {
+      id: true,
+      shelves: true,
+    },
+  });
+
+  res.json(vaults);
 });
 
-app.listen(8000);
+// Get a vault
+app.get("/vaults/:vaultId", async (req, res) => {
+  const vault = await prisma.vault.findUnique({
+    select: {
+      shelves: true,
+    },
+    where: {
+      id: parseInt(req.params.vaultId),
+    },
+  });
 
-console.log(app);
+  res.json(vault);
+});
+
+// Create new vault
+app.post("/", async (req, res) => {});
+
+app.listen(3132);
