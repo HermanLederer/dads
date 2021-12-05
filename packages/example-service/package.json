@@ -4,8 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "concurrently -n tsup,node \"tsup src/index.ts --watch\" \"nodemon dist/index.js\"",
-    "build": "tsup src/index.ts"
+    "dev": "concurrently -n tsup,node \"tsup-node src/index.ts --format esm --watch\" \"nodemon dist/index.mjs\"",
+    "build": "tsup-node src/index.ts --format esm",
+    "start": "node dist/index.mjs"
   },
   "author": "HermanLederer",
   "license": "MIT",
@@ -19,6 +20,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "node-fetch": "^3.1.0",
     "pinpon-common": "link:../example-common"
   }
 }

@@ -11,20 +11,21 @@ datasource db {
 }
 
 model Vault {
-  id      Int     @id @default(autoincrement())
+  id      String  @id @db.VarChar(15)
   shelves Shelf[]
 
   @@map(name: "vault")
 }
 
 model Shelf {
-  id         String   @id
+  id         String   @id @db.VarChar(31)
+  label      String   @default("unnamed") @db.VarChar(63)
   content    String   @db.VarChar(1023)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  vault    Vault @relation(fields: [vault_id], references: [id])
-  vault_id Int
+  vault    Vault  @relation(fields: [vault_id], references: [id])
+  vault_id String @db.VarChar(16)
 
   @@map(name: "shelf")
 }
