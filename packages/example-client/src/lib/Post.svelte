@@ -1,12 +1,6 @@
-<script lang="ts" context="module">
-  export type PostContent = {
-    title: string;
-    text: string;
-  };
-</script>
-
 <script lang="ts">
-  export let content: PostContent;
+  import type { Pinpon } from "pinpon-common/Pinpon";
+  export let content: Pinpon;
 </script>
 
 <article>

@@ -2,9 +2,9 @@
   "name": "dads-vault",
   "version": "0.1.0",
   "description": "Store user data in a secure decentralized storage",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "concurrently -n tsc,node \"tsup src/index.ts --watch\" \"nodemon dist/index.js\"",
+    "dev": "concurrently -n tsup,node \"tsup src/index.ts --watch\" \"nodemon dist/index.js\"",
     "build": "npm run prisma:generate && tsup src/index.ts",
     "prisma:migrate": "pnpx prisma migrate dev --name init",
     "prisma:studio": "pnpx prisma studio",
