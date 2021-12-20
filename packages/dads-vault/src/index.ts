@@ -9,47 +9,30 @@ app.use(cors());
 
 const prisma = new PrismaClient();
 
-// // Get all valults
-// app.get("/vaults/", async (req, res) => {
-//   const vaults = await prisma.vault.findMany({
-//     select: {
-//       id: true,
-//       shelves: true,
-//     },
-//   });
-
-//   res.json(vaults);
-// });
-
-// // Get a vault
-// app.get("/vaults/:vaultId", async (req, res) => {
-//   const vault = await prisma.vault.findUnique({
-//     select: {
-//       shelves: true,
-//     },
-//     where: {
-//       id: req.params.vaultId,
-//     },
-//   });
-
-//   res.json(vault);
-// });
-
-// Shelfcopies
+// Maps
 const shelfcopies = new Map<string, string>();
 const shelfcopyids = new Map<string, string>();
 
+//
+//
+// Get a new shelfcopy
 app.get("/shelfcopy", async (req, res) => {
-  const { vault, shelve, timeout } = req.query;
+  const { vault, shelf, timeout } = req.query;
+
+  if (!vault || !shelf) {
+    res.sendStatus(400);
+    return;
+  }
 
   const shelfContent = await prisma.shelf.findFirst({
     select: {
       id: true,
+      label: true,
       content: true,
     },
     where: {
       vault_id: vault as string,
-      label: shelve as string,
+      label: shelf as string,
     },
   });
 
@@ -63,7 +46,7 @@ app.get("/shelfcopy", async (req, res) => {
     } else {
       // There is no public shelfcopy of this shelf yet
 
-      // Create new shelfcopyies entry
+      // Create new shelfcopies entry
       const uuid = randomUUID();
       shelfcopies.set(shelfContent.id, uuid);
       shelfcopyids.set(uuid, shelfContent.id);
@@ -88,6 +71,9 @@ app.get("/shelfcopy", async (req, res) => {
   }
 });
 
+//
+//
+// Get data from a shelfcopy
 app.get("/shelfcopies/:uuid", async (req, res) => {
   if (shelfcopyids.has(req.params.uuid)) {
     const shelf = shelfcopyids.get(req.params.uuid);
