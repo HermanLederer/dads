@@ -1,0 +1,130 @@
+@use "sass:color";
+
+// Colors
+
+$theme: #5e8686;
+$theme2: adjust-color(
+  $color: $theme,
+  $hue: 45,
+);
+$background-base: #fff;
+$foreground-base: #000;
+$background: mix($background-base, $theme, 98%);
+$foreground: mix($foreground-base, $theme, 80%);
+$foreground-theme: #fff;
+
+// Transitions
+
+$trans-in: 50ms;
+$trans-out: 300ms;
+
+// Global
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 14px;
+}
+
+body {
+  width: 20rem;
+  padding: 2rem;
+
+  background: $background;
+  color: $foreground;
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+// Generic elements
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+input {
+  width: 100%;
+  font-size: 1rem;
+}
+
+label {
+  opacity: 0.8;
+  font-size: 0.8rem;
+}
+
+input[type="text"] {
+  height: 3rem;
+
+  background: transparent;
+
+  color: $theme;
+  border: none;
+  border-bottom: 2px $theme solid;
+  font-weight: 600;
+
+  outline: none;
+  transition: $trans-out;
+
+  &:hover,
+  &:focus {
+    color: $theme2;
+    border-color: $theme2;
+
+    transition: $trans-in;
+  }
+}
+
+button,
+input[type="button"],
+input[type="submit"] {
+  width: 100%;
+  height: 3rem;
+
+  background: $theme;
+  color: $foreground-theme;
+  border: none;
+  border-radius: 1.5rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: $trans-out;
+
+  &:hover {
+    background: $theme2;
+    transition: $trans-in;
+  }
+}
+
+// Local
+
+form {
+  position: relative;
+
+  & > * {
+    margin-bottom: 1rem;
+  }
+
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+
+  & > h1 {
+    margin-bottom: 2rem;
+  }
+}
+
+label {
+  margin: 0;
+  color: inherit;
+  pointer-events: none;
+}
+
+.hint {
+  opacity: 0.6;
+  font-size: 0.8rem;
+}
