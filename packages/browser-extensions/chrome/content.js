@@ -18,7 +18,3 @@ port.onMessage.addListener(function (msg) {
 
   window.postMessage(msg)
 });
-
-window.addEventListener("message", (event) => {
-  console.log(event.data);
-});

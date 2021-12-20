@@ -1,64 +1,50 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import type { Pinpon } from "pinpon-common/Pinpon";
+  import { dads } from "./dads";
 
+  //
   // Import componenets
+
   import Post from "./lib/Post.svelte";
 
-  // DADS API
-  let DADS = {
-    vault: "hasncvosd673950",
-    async getShelfcopy(shelf: string): Promise<string> {
-      const v = prompt(
-        `This website wants to access the shelf ${shelf} in your DADS vault. \n\nDADS ID: `,
-        this.vault
-      );
-      console.log(v);
-      if (v) {
-        const res = await fetch(
-          `http://localhost:3132/shelfcopy?vault=${v}&shelf=${shelf}`
-        );
-        return await res.text();
-      } else return null;
-    },
-    getShelfContent(shelfcopy: string) {
-      return fetch(`http://localhost:3132/shelfcopies/${shelfcopy}`);
-    },
-  };
+  //
+  // Pinpons
 
-  // User interests
-  let interestShelfcopy: string;
-
-  async function getInterests() {
-    interestShelfcopy = await DADS.getShelfcopy("pinpon-interests");
-  }
-
-  // Loading pinpons from the backend
   let pinpons: Pinpon[] = [];
 
   async function loadPinpons() {
-    let res: Response;
-    if (interestShelfcopy) {
-      res = await fetch(
-        `http://localhost:8000/pinpons?shelfcopy=${interestShelfcopy}`
+    try {
+      //
+      // Attempt to get a shelfcopy of pinpon-interests
+      // and load pinpons with that shelfcopy
+
+      const shelfcopy = await dads.getShelfcopy("pinpon-interests");
+      const res = await fetch(
+        `http://localhost:8000/pinpons?shelfcopy=${shelfcopy}`
       );
-    } else {
-      res = await fetch(`http://localhost:8000/pinpons`);
+      pinpons = (await res.json()).pinpons;
+    } catch (e) {
+      //
+      // Shelfcopy was not retreived
+      // load general pinpons and display a warning
+
+      const res = await fetch(`http://localhost:8000/pinpons`);
+      pinpons = (await res.json()).pinpons;
     }
-    pinpons = (await res.json()).pinpons;
   }
 
-  // Load pinpons when the app is mounted
-  onMount(async () => {
-    await getInterests();
-    loadPinpons();
-  });
+  //
+  // Load pinpons when window is loaded
+  // dads api is not available before that
+
+  window.addEventListener("load", loadPinpons);
 </script>
 
 <header>
   <h1>PinPon</h1>
 </header>
 <main>
+  <button on:click={loadPinpons}>Refresh</button>
   {#each pinpons as post}
     <Post content={post} />
   {/each}
