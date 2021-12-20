@@ -3,7 +3,7 @@
  * for prototype demonstation purposes
  */
 
-import type { Pinpon } from "pinpon-common/Pinpon";
+import type { Pinpon } from "../../common/Pinpon";
 
 export const pinpons: Pinpon[] = [
   {
