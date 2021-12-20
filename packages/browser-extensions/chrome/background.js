@@ -7,13 +7,15 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({ network: n, vault: v });
 });
 
-chrome.storage.sync.get("network", ({ network }) => {
-  n = network;
-});
+function reloadData() {
+  chrome.storage.sync.get("network", ({ network }) => {
+    n = network;
+  });
 
-chrome.storage.sync.get("vault", ({ vault }) => {
-  v = vault;
-});
+  chrome.storage.sync.get("vault", ({ vault }) => {
+    v = vault;
+  });
+}
 
 // DADS api
 
@@ -22,6 +24,9 @@ chrome.runtime.onConnect.addListener(function (port) {
     if (!msg.target) return;
     if (msg.target !== "dads-access") return;
     if (!msg.event) return;
+
+    // Reload extension data
+    reloadData();
 
     //
     //
@@ -54,16 +59,3 @@ chrome.runtime.onConnect.addListener(function (port) {
     // else {}
   });
 });
-
-// port.onMessage.addListener(function (request, sender, sendResponse) {
-//   if (request.target !== "dads-access") return;
-//   if (request.event !== "get-shelfcopy") return;
-
-// });
-
-// chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
-//   if (request.type === "getShelfContent") {
-//     const res = await fetch(`http://localhost:3132/shelfcopies/${shelfcopy}`);
-//     sendResponse({ farewell: await res.text() });
-//   }
-// });
