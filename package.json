@@ -1,0 +1,8 @@
+{
+	"dependencies": {
+		"concurrently": "^6.4.0"
+	},
+  "scripts": {
+    "dev:all": "concurrently -n vault,pp-f,pp-b \"pnpm --prefix ./packages/dads-vault run dev\" \"pnpm --prefix ./packages/examples/pinpon/backend run dev\" \"pnpm --prefix ./packages/examples/pinpon/frontend run dev\""
+  }
+}
