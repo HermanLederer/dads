@@ -1,37 +1,17 @@
-@use "sass:color";
-
-// Colors
-
-$theme: #5e8686;
-$theme2: adjust-color(
-  $color: $theme,
-  $hue: 45,
-);
-$background-base: #fff;
-$foreground-base: #000;
-$background: mix($background-base, $theme, 98%);
-$foreground: mix($foreground-base, $theme, 80%);
-$foreground-theme: #fff;
-
-// Transitions
-
-$trans-in: 50ms;
-$trans-out: 300ms;
-
 // Global
 
-* {
+:global(*) {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root {
+:global(:root) {
   font-size: 14px;
 }
 
-body {
-  width: 20rem;
+:global(body) {
+  min-width: 20rem;
   padding: 2rem;
 
   background: $background;
@@ -42,22 +22,38 @@ body {
 
 // Generic elements
 
-h1 {
+:global(h1) {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+:global(h2) {
   font-size: 1.5rem;
   font-weight: 800;
 }
 
-input {
+
+:global(a) {
+  color: $theme;
+  transition: $trans-out;
+
+  &:hover {
+    color: $theme2;
+    transition: $trans-in;
+  }
+}
+
+:global(input) {
   width: 100%;
   font-size: 1rem;
 }
 
-label {
+:global(label) {
   opacity: 0.8;
   font-size: 0.8rem;
 }
 
-input[type="text"] {
+:global(input[type="text"]) {
   height: 3rem;
 
   background: transparent;
@@ -79,9 +75,9 @@ input[type="text"] {
   }
 }
 
-button,
-input[type="button"],
-input[type="submit"] {
+:global(button),
+:global(input[type="button"]),
+:global(input[type="submit"]) {
   width: 100%;
   height: 3rem;
 
@@ -98,33 +94,4 @@ input[type="submit"] {
     background: $theme2;
     transition: $trans-in;
   }
-}
-
-// Local
-
-form {
-  position: relative;
-
-  & > * {
-    margin-bottom: 1rem;
-  }
-
-  & > *:last-child {
-    margin-bottom: 0;
-  }
-
-  & > h1 {
-    margin-bottom: 2rem;
-  }
-}
-
-label {
-  margin: 0;
-  color: inherit;
-  pointer-events: none;
-}
-
-.hint {
-  opacity: 0.6;
-  font-size: 0.8rem;
 }

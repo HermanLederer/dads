@@ -1,4 +1,4 @@
-var port = chrome.runtime.connect();
+const port = chrome.runtime.connect({ name: "content" });
 
 window.addEventListener("message", (event) => {
   // We only accept messages from ourselves
@@ -16,5 +16,7 @@ port.onMessage.addListener(function (msg) {
   if (msg.target !== "dads-app") return;
   if (!msg.event) return;
 
-  window.postMessage(msg)
+  window.postMessage(msg);
 });
+
+export {};

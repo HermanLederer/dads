@@ -1,0 +1,12 @@
+@use "sass:color";
+
+$theme: #5e8686;
+$theme2: adjust-color(
+  $color: $theme,
+  $hue: 45,
+);
+$background-base: #fff;
+$foreground-base: #000;
+$background: mix($background-base, $theme, 98%);
+$foreground: mix($foreground-base, $theme, 80%);
+$foreground-theme: #fff;

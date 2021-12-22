@@ -13,6 +13,8 @@
   let pinpons: Pinpon[] = [];
 
   async function loadPinpons() {
+    pinpons = [];
+
     try {
       //
       // Attempt to get a shelfcopy of pinpon-interests

@@ -2,11 +2,16 @@ let dads = null;
 
 function setupDADS() {
   window.addEventListener("message", (event) => {
+    // console.log(event.data);
+
     if (event.data.target && event.data.target === "dads-app") {
       if (event.data.event && event.data.event === dads.awaitingResponse) {
         if (event.data.data) {
           dads.resolve(event.data.data);
         }
+      }
+      else if (event.data.event && event.data.event === "error") {
+        dads.reject();
       }
     }
   });

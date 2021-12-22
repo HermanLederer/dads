@@ -1,4 +1,4 @@
 packages:
   - "packages/*"
-  - "packages/browser-extensions/**/*"
+  - "packages/dads-access/browser-extensions/*"
   - "packages/examples/**/*"
