@@ -2,20 +2,20 @@
   import Options from "./lib/Options.svelte";
   import Permission from "./lib/Permission.svelte";
 
-  import { state } from "./store";
-  let state_value;
-  state.subscribe((value) => {
-    state_value = value;
+  import { store } from "./store";
+
+  let state;
+  store.subscribe((value) => {
+    state = value;
   });
 
   window.port = chrome.runtime.connect({ name: "popup" });
 
   window.port.onMessage.addListener((msg) => {
-    console.log(msg);
     if (msg.target && msg.target === "dads-access")
       if (msg.event && msg.event === "update-state")
         if (msg.state) {
-          state.set(msg.state);
+          store.set(Object.assign(state, msg.state));
         }
   });
 </script>
@@ -23,7 +23,7 @@
 <header>
   <h1>DADS Access</h1>
 </header>
-{#if state_value.state === "permission"}
+{#if state.state === "permission"}
   <Permission />
 {:else}
   <Options />

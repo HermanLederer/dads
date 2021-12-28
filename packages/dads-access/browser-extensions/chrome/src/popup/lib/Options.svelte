@@ -1,21 +1,41 @@
 <script lang="ts">
-  const data = {
-    network: "",
-    vault: "",
-  };
+  import { store } from "../store";
+  import type { State } from "../State";
 
-  chrome.storage.sync.get("network", ({ network }) => {
-    data.network = network;
+  let state: State | null = null;
+  store.subscribe((value) => {
+    state = value;
   });
 
-  chrome.storage.sync.get("vault", ({ vault }) => {
-    data.vault = vault;
-  });
+  function loadOptions() {
+    let partialState: Partial<State> = {
+      options: {
+        network: "",
+        vault: "",
+      },
+    };
+
+    chrome.storage.sync.get("network", ({ network }) => {
+      partialState.options.network = network;
+    });
+
+    chrome.storage.sync.get("vault", ({ vault }) => {
+      partialState.options.vault = vault;
+    });
+    console.log(state);
+
+    console.log(partialState);
+
+    store.set(Object.assign(state, partialState));
+
+    console.log(state);
+  }
+  loadOptions();
 
   function submit() {
     chrome.storage.sync.set({
-      network: data.network,
-      vault: data.vault,
+      network: state.options.network,
+      vault: state.options.vault,
     });
   }
 </script>
@@ -23,14 +43,18 @@
 <form on:submit|preventDefault={submit}>
   <h2>Your vault</h2>
 
-  <label for="network">Network address</label>
-  <input type="text" name="network" bind:value={data.network} />
+  {#if state}
+    <label for="network">Network address</label>
+    <input type="text" name="network" bind:value={state.options.network} />
 
-  <label for="vault">Your vault</label>
-  <input type="text" name="vault" bind:value={data.vault} />
-  <p class="hint">Do not share this with anyone!</p>
+    <label for="vault">Your vault</label>
+    <input type="text" name="vault" bind:value={state.options.vault} />
+    <p class="hint">Do not share this with anyone!</p>
 
-  <input type="submit" value="Apply" />
+    <input type="submit" value="Apply" />
+  {:else}
+    <p>Loading...</p>
+  {/if}
 </form>
 
 <style lang="scss">
@@ -45,10 +69,6 @@
 
     & > *:last-child {
       margin-bottom: 0;
-    }
-
-    & > h1 {
-      margin-bottom: 2rem;
     }
   }
 

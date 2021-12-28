@@ -100,6 +100,13 @@ chrome.runtime.onConnect.addListener((port) => {
 
       // TODO: Bring up the popup
       // Currently impossible to do in chrome
+      // Open a new window instead
+      chrome.windows.create({
+        url: chrome.runtime.getURL("../popup/index.html"),
+        type: "popup",
+        width: 14 * 20,
+        height: 14 * 30,
+      });
     }
 
     //

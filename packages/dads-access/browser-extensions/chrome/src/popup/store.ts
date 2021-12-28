@@ -1,6 +1,11 @@
 import { writable } from "svelte/store";
+import type {State} from "./State"
 
-export const state = writable({
+export const store = writable<State>({
   state: "idle",
   description: "",
+  options: {
+    network: "",
+    vault: "",
+  }
 });
