@@ -21,7 +21,7 @@
     pinpons = [];
 
     try {
-      throw new Error("tmp");
+      // throw new Error("tmp");
 
       //
       // Attempt to get a shelfcopy of pinpon-interests
