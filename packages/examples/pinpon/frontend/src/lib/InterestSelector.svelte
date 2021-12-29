@@ -1,6 +1,10 @@
+<script lang="ts" context="module">
+  import type { Interest } from "pinpon-common/Interest";
+</script>
+
 <script lang="ts">
-  export let interests: string[];
-  export let selected: string[] = [];
+  export let interests: Interest[];
+  export let selected: Interest[] = [];
 </script>
 
 <header>
@@ -33,11 +37,6 @@
 
     h2 {
       margin-bottom: 1.5rem;
-    }
-
-    .is-cta {
-      height: 3rem;
-      margin-top: 1rem;
     }
   }
 

@@ -15,6 +15,7 @@
 body {
   background: $color-bg;
   color: $color-fg;
+  line-height: 1rem;
 }
 
 h1,
@@ -52,5 +53,22 @@ button {
 
   &:hover {
     background: mix($color-fg, transparent, 10%);
+  }
+}
+
+// Scroll bard
+::-webkit-scrollbar {
+  width: 1rem;
+}
+
+::-webkit-scrollbar-track {
+  background: mix($color-fg, $color-bg, 1%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: mix($color-fg, $color-bg, 10%);
+
+  &:hover {
+    background: mix($color-fg, $color-bg, 40%);
   }
 }

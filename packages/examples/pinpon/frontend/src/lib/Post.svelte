@@ -1,28 +1,71 @@
 <script lang="ts">
+  import { createEventDispatcher, onMount } from "svelte";
   import type { Pinpon } from "pinpon-common/Pinpon";
+  import { interests } from "pinpon-common/Interest";
   export let content: Pinpon;
+
+  const dispatch = createEventDispatcher();
 </script>
 
 <article>
-  <h3>{content.title}</h3>
-  <p>{content.text}</p>
+  <div class="content" style={`height: ${200 + Math.random() * 300}px;`} />
+
+  <div class="meta">
+    <h3>{content.title}</h3>
+    <!-- <p>{content.text}</p> -->
+    <!-- <ul>
+      {#each content.interests as interest}
+        <li>{interest}</li>
+      {/each}
+    </ul> -->
+  </div>
 </article>
 
 <style lang="scss">
   @import "../resources/all.scss";
 
   article {
-    padding: 2rem;
-    border-radius: 2rem;
+    border-radius: 1rem;
+    // background: mix($color-fg, transparent, 5%);
 
-    background: mix($color-fg, transparent, 5%);
+    .content {
+      margin-bottom: 1rem;
 
-    h3 {
-      color: mix($color-fg, transparent, 100%);
+      background: mix($color-fg, transparent, 20%);
+      border-radius: 1rem;
     }
 
-    p {
-      color: mix($color-fg, transparent, 60%);
+    .meta {
+      padding: 0 2rem;
+
+      h3 {
+        margin-bottom: 0.5rem;
+        color: mix($color-fg, transparent, 100%);
+        font-size: 1rem;
+      }
+
+      p {
+        margin-bottom: 0.5rem;
+        color: mix($color-fg, transparent, 60%);
+      }
+
+      ul {
+        margin-top: -0.5rem;
+        list-style: none;
+
+        li {
+          margin-top: 0.5rem;
+          margin-right: 0.5rem;
+          padding: 0.5rem 1rem;
+
+          background: mix($color-fg, transparent, 10%);
+          color: mix($color-fg, transparent, 80%);
+          border-radius: 1rem;
+          font-size: 0.8rem;
+
+          display: inline-block;
+        }
+      }
     }
   }
 </style>

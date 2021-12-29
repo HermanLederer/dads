@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Pinpon } from "pinpon-common/Pinpon";
+  import { interests } from "pinpon-common/Interest";
   import { dads } from "./dads";
 
   //
@@ -8,6 +9,8 @@
   import Grid from "svelte-masonry/Masonry.svelte";
   import Post from "./lib/Post.svelte";
   import Selector from "./lib/InterestSelector.svelte";
+
+  let refreshLayout;
 
   //
   // Pinpons
@@ -56,17 +59,23 @@
         <li><button /></li>
       </ul> -->
     </header>
-    <Grid gridGap="1rem;">
-      {#each pinpons as post}
-        <Post content={post} />
-      {/each}
-    </Grid>
+    <div class="scroll">
+      <Grid gridGap="1rem;" items={pinpons} bind:refreshLayout>
+        {#each pinpons as post}
+          <Post
+            content={post}
+            on:load={() => {
+              refreshLayout();
+              console.log(1);
+            }}
+          />
+        {/each}
+      </Grid>
+    </div>
   </main>
 
   <aside>
-    <Selector
-      interests={["Test", "Future", "Future", "Future", "Future", "Future"]}
-    />
+    <Selector interests={[...interests]} />
   </aside>
 </div>
 
@@ -79,6 +88,12 @@
     grid-template-columns: auto 20rem;
 
     main {
+      .scroll {
+        height: calc(100vh - 5rem - 1px);
+        overflow: hidden;
+        overflow-y: scroll;
+      }
+
       header {
         padding: 0 1rem;
 
@@ -88,16 +103,16 @@
         align-items: center;
         justify-content: space-between;
 
-        ul {
-          list-style: none;
-          display: flex;
-        }
+        // ul {
+        //   list-style: none;
+        //   display: flex;
+        // }
 
-        button {
-          min-width: 2rem;
-          height: 2rem;
-          margin-left: 0.5rem;
-        }
+        // button {
+        //   min-width: 2rem;
+        //   height: 2rem;
+        //   margin-left: 0.5rem;
+        // }
       }
     }
 
