@@ -50,6 +50,11 @@
   <main>
     <header>
       <h1>PinPon</h1>
+      <!-- <ul>
+        <li><button /></li>
+        <li><button /></li>
+        <li><button /></li>
+      </ul> -->
     </header>
     <Grid gridGap="1rem;">
       {#each pinpons as post}
@@ -74,13 +79,25 @@
     grid-template-columns: auto 20rem;
 
     main {
-      // padding: 0 1rem;
-      // background: mix($color-bg, $color-fg, 95%);
-
       header {
         padding: 0 1rem;
 
         border-bottom: 1px solid mix($color-fg, $color-bg, 10%);
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        ul {
+          list-style: none;
+          display: flex;
+        }
+
+        button {
+          min-width: 2rem;
+          height: 2rem;
+          margin-left: 0.5rem;
+        }
       }
     }
 
