@@ -46,7 +46,7 @@
 
     &.is-selected {
       background: $color-fg;
-      color: mix($color-bg, transparent, 80%);
+      color: mix($color-bg, transparent, 100%);
     }
   }
 </style>

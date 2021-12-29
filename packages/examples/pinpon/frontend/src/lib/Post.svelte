@@ -26,20 +26,30 @@
 
   article {
     border-radius: 1rem;
-    // background: mix($color-fg, transparent, 5%);
+    cursor: pointer;
+
+    &:hover {
+      background: mix($color-fg, transparent, 1%);
+
+      .content {
+        transform: scale(0.99);
+      }
+    }
 
     .content {
       margin-bottom: 1rem;
 
-      background: mix($color-fg, transparent, 20%);
+      background: mix($color-fg, $color-bg, 20%);
       border-radius: 1rem;
+
+      transition: $trans-med;
     }
 
     .meta {
       padding: 0 2rem;
 
       h3 {
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
         color: mix($color-fg, transparent, 100%);
         font-size: 1rem;
       }
