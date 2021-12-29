@@ -5,7 +5,9 @@
   //
   // Import componenets
 
+  import Grid from "svelte-masonry/Masonry.svelte";
   import Post from "./lib/Post.svelte";
+  import Selector from "./lib/InterestSelector.svelte";
 
   //
   // Pinpons
@@ -16,6 +18,8 @@
     pinpons = [];
 
     try {
+      throw new Error("tmp");
+
       //
       // Attempt to get a shelfcopy of pinpon-interests
       // and load pinpons with that shelfcopy
@@ -42,12 +46,47 @@
   window.addEventListener("load", loadPinpons);
 </script>
 
-<header>
-  <h1>PinPon</h1>
-</header>
-<main>
-  <button on:click={loadPinpons}>Refresh</button>
-  {#each pinpons as post}
-    <Post content={post} />
-  {/each}
-</main>
+<div class="app">
+  <main>
+    <header>
+      <h1>PinPon</h1>
+    </header>
+    <Grid gridGap="1rem;">
+      {#each pinpons as post}
+        <Post content={post} />
+      {/each}
+    </Grid>
+  </main>
+
+  <aside>
+    <Selector
+      interests={["Test", "Future", "Future", "Future", "Future", "Future"]}
+    />
+  </aside>
+</div>
+
+<style lang="scss">
+  @import "./resources/all.scss";
+
+  .app {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: auto 20rem;
+
+    main {
+      // padding: 0 1rem;
+      // background: mix($color-bg, $color-fg, 95%);
+
+      header {
+        padding: 0 1rem;
+
+        border-bottom: 1px solid mix($color-fg, $color-bg, 10%);
+      }
+    }
+
+    aside {
+      padding: 0 1rem;
+      border-left: 1px solid mix($color-fg, $color-bg, 10%);
+    }
+  }
+</style>

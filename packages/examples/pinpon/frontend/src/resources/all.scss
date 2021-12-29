@@ -1,0 +1,10 @@
+@use "sass:color";
+
+$color-bg: #fff;
+$color-fg: #000;
+
+$color-a1: rgb(128, 0, 233);
+
+$trans-timing: linear;
+$trans-srt: 50ms $trans-timing;
+$trans-med: 150ms $trans-timing;

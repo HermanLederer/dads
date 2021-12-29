@@ -1,0 +1,56 @@
+@import "./resources/all.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 16px;
+}
+
+body {
+  background: $color-bg;
+  color: $color-fg;
+}
+
+h1,
+h2 {
+  margin: 2rem 0;
+  color: mix($color-a1, $color-fg, 20%);
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+input,
+button {
+  min-width: 4rem;
+  padding: 1rem 1rem;
+  line-height: 1rem;
+
+  background: mix($color-fg, transparent, 5%);
+  color: $color-fg;
+  border: none;
+  border-radius: 1.5rem;
+  font-size: 1rem;
+}
+
+input[type="checkbox"] {
+  width: 3rem;
+  height: 3rem;
+}
+
+input[type="button"],
+input[type="submit"],
+button {
+  cursor: pointer;
+
+  transition: $trans-med;
+
+  &:hover {
+    background: mix($color-fg, transparent, 10%);
+  }
+}
