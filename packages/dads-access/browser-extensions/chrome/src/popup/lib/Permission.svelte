@@ -1,8 +1,10 @@
 <script lang="ts">
   import { store } from "../store";
-  import type { State } from "../State";
+  import type { StoreState } from "../StoreState";
 
-  let state: State;
+  export let write: boolean;
+
+  let state: StoreState;
   store.subscribe((value) => {
     state = value;
   });
@@ -26,15 +28,25 @@
 
 <section>
   <h2>Permission</h2>
-  <p>
-    Application would like to get a copy of <strong>{state.description}</strong>
-    shelf
-  </p>
+
+  {#if write}
+    <p>
+      Application would like to write new data to the <strong
+        >{state.systemState.shelf}</strong
+      > shelf
+    </p>
+  {:else}
+    <p>
+      Application would like to get a copy of <strong
+        >{state.systemState.shelf}</strong
+      > shelf
+    </p>
+  {/if}
 
   <aside id="shelf-contents">
     {#if shelfContent}
       <div class="inside">
-        <h3>Inside <strong>{state.description}</strong>:</h3>
+        <h3>Inside <strong>{state.systemState.shelf}</strong>:</h3>
         <p>{shelfContent}</p>
       </div>
     {:else}
@@ -42,10 +54,19 @@
         class="whats-inside"
         on:click={() => {
           fetchShelfData();
-        }}>What's inside {state.description}?</button
+        }}>What's inside {state.systemState.shelf}?</button
       >
     {/if}
   </aside>
+
+  {#if write}
+    <aside id="new-contents">
+      <div class="inside">
+        <h3>New data:</h3>
+        <p>{state.systemState.newData}</p>
+      </div>
+    </aside>
+  {/if}
 
   <button
     on:click={() => {

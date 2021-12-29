@@ -1,3 +1,5 @@
+import type { State } from "../States";
+
 let n = "http://localhost:3132";
 let v = "000000000000000";
 
@@ -18,11 +20,17 @@ function reloadData() {
 }
 
 // DADS api
+type Dads = {
+  state: State;
+  permission: {
+    grant(): void;
+    deny(): void;
+  };
+};
 
-const dads = {
+const dads: Dads = {
   state: {
     state: "idle",
-    description: "",
   },
   permission: {
     async grant() {},
@@ -51,8 +59,7 @@ chrome.runtime.onConnect.addListener((port) => {
         async grant() {
           // Change the state back to idle and notify the popup
           dads.state = {
-            state: "iodle",
-            description: "",
+            state: "idle",
           };
           popup.updateState();
 
@@ -75,11 +82,11 @@ chrome.runtime.onConnect.addListener((port) => {
             });
           }
         },
+
         deny() {
           // Change the state back to idle and notify the popup
           dads.state = {
-            state: "iodle",
-            description: "",
+            state: "idle",
           };
           popup.updateState();
 
@@ -94,8 +101,8 @@ chrome.runtime.onConnect.addListener((port) => {
 
       // Notify the popup to switch state
       dads.state = {
-        state: "permission",
-        description: msg.shelf,
+        state: "permission-read",
+        shelf: msg.shelf,
       };
 
       // TODO: Bring up the popup
@@ -128,6 +135,71 @@ chrome.runtime.onConnect.addListener((port) => {
           error,
         });
       }
+    }
+
+    //
+    //
+    // Save data
+    else if (msg.event === "save-to-shelf") {
+      // Set current permission request functions
+      // WARNING: This will break with multiple apps requesting at the same time
+      dads.permission = {
+        async grant() {
+          // Change the state back to idle and notify the popup
+          dads.state = {
+            state: "idle",
+          };
+          popup.updateState();
+
+          // Attempt to write to shelf
+          try {
+            const res = await fetch(
+              `${n}/shelfcopy?vault=${v}&shelf=${msg.shelf}`,
+              {
+                method: "post",
+                body: msg.newData,
+              }
+            );
+          } catch (error) {
+            port.postMessage({
+              target: "dads-app",
+              event: "error",
+              error,
+            });
+          }
+        },
+        deny() {
+          // Change the state back to idle and notify the popup
+          dads.state = {
+            state: "idle",
+          };
+          popup.updateState();
+
+          // Notify the app
+          port.postMessage({
+            target: "dads-app",
+            event: "error",
+            error: "user permission denied",
+          });
+        },
+      };
+
+      // Notify the popup to switch state
+      dads.state = {
+        state: "permission-write",
+        shelf: msg.shelf,
+        newData: msg.newData,
+      };
+
+      // TODO: Bring up the popup
+      // Currently impossible to do in chrome
+      // Open a new window instead
+      chrome.windows.create({
+        url: chrome.runtime.getURL("../popup/index.html"),
+        type: "popup",
+        width: 14 * 20,
+        height: 14 * 30,
+      });
     }
 
     // else {}

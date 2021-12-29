@@ -1,14 +1,14 @@
 <script lang="ts">
   import { store } from "../store";
-  import type { State } from "../State";
+  import type { StoreState } from "../StoreState";
 
-  let state: State | null = null;
+  let state: StoreState | null = null;
   store.subscribe((value) => {
     state = value;
   });
 
   function loadOptions() {
-    let partialState: Partial<State> = {
+    let partialState: Partial<StoreState> = {
       options: {
         network: "",
         vault: "",

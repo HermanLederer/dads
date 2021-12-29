@@ -3,8 +3,9 @@
   import Permission from "./lib/Permission.svelte";
 
   import { store } from "./store";
+  import type { StoreState } from "./StoreState";
 
-  let state;
+  let state: StoreState;
   store.subscribe((value) => {
     state = value;
   });
@@ -15,7 +16,7 @@
     if (msg.target && msg.target === "dads-access")
       if (msg.event && msg.event === "update-state")
         if (msg.state) {
-          store.set(Object.assign(state, msg.state));
+          store.set(Object.assign(state, { systemState: msg.state }));
         }
   });
 </script>
@@ -23,8 +24,10 @@
 <header>
   <h1>DADS Access</h1>
 </header>
-{#if state.state === "permission"}
-  <Permission />
+{#if state.systemState.state === "permission-read"}
+  <Permission write={false} />
+{:else if state.systemState.state === "permission-write"}
+  <Permission write={true} />
 {:else}
   <Options />
 {/if}

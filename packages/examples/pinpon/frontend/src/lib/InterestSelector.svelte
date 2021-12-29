@@ -3,25 +3,35 @@
 </script>
 
 <script lang="ts">
+  import { dads } from "../dads";
+
   export let interests: Interest[];
   export let selected: Interest[] = [];
 </script>
 
 <header>
   <h2>Interests</h2>
-  <!-- <input class="is-cta" type="submit" value="Update" /> -->
+  <!-- <button>Update</button> -->
 </header>
 
 {#each interests as interest}
   <button
     class="interest"
     class:is-selected={selected.includes(interest)}
-    on:click={() => {
+    on:click={async () => {
+      // Update locally
       let i = selected.indexOf(interest);
       if (i >= 0) {
         selected = selected.filter((e) => e != interest);
       } else {
         selected = [...selected, interest];
+      }
+
+      // Save
+      try {
+        await dads.saveToShelf("pinpon-interests", selected.join(","));
+      } catch (e) {
+        selected = selected.filter((e) => e != interest);
       }
     }}>{interest}</button
   >
