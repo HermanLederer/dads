@@ -2,6 +2,7 @@ import { Interest } from "./Interest";
 
 export type Pinpon = {
   title: string;
-  text: string;
+  unsplash: string;
+  author: string,
   interests: Interest[];
 };

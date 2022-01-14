@@ -4,9 +4,17 @@
 
 <script lang="ts">
   import { dads } from "../dads";
+  import { createEventDispatcher } from "svelte";
+  import { interests as userInterests } from "../stores";
+
+  const dispatch = createEventDispatcher();
+
+  let selected;
+  userInterests.subscribe((value) => {
+    selected = value;
+  });
 
   export let interests: Interest[];
-  export let selected: Interest[] = [];
 </script>
 
 <header>
@@ -21,17 +29,21 @@
     on:click={async () => {
       // Save
       try {
-        await dads.saveToShelf("pinpon-interests", selected.join(", "));
-
         // Update locally
+        let newInterests;
         let i = selected.indexOf(interest);
         if (i >= 0) {
-          selected = selected.filter((e) => e != interest);
+          newInterests = selected.filter((e) => e != interest);
         } else {
-          selected = [...selected, interest];
+          newInterests = [...selected, interest];
         }
+
+        await dads.saveToShelf("pinpon-interests", [newInterests].join(","));
+        userInterests.set(newInterests);
+
+        dispatch("update");
       } catch (e) {
-        alert("Failed to save preferences")
+        alert("Failed to save preferences");
       }
     }}>{interest}</button
   >

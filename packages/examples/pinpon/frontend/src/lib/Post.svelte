@@ -1,14 +1,18 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import type { Pinpon } from "pinpon-common/Pinpon";
-  import { interests } from "pinpon-common/Interest";
   export let content: Pinpon;
 
   const dispatch = createEventDispatcher();
 </script>
 
 <article>
-  <div class="content" style={`height: ${200 + Math.random() * 300}px;`} />
+  <img
+    src={`https://unsplash.com/photos/${content.unsplash}/download?&w=1920`}
+    class="content"
+    alt=""
+    on:load={() => dispatch("load")}
+  />
 
   <div class="meta">
     <h3>{content.title}</h3>
@@ -27,9 +31,11 @@
   article {
     border-radius: 1rem;
     cursor: pointer;
+    transition: $trans-med;
+    transition-property: background;
 
     &:hover {
-      background: mix($color-fg, transparent, 1%);
+      background: mix($color-fg, transparent, 5%);
 
       .content {
         transform: scale(0.99);
@@ -37,6 +43,7 @@
     }
 
     .content {
+      width: 100%;
       margin-bottom: 1rem;
 
       background: mix($color-fg, $color-bg, 20%);

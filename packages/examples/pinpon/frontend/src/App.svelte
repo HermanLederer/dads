@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { Pinpon } from "pinpon-common/Pinpon";
+  import type { Interest } from "pinpon-common/Interest";
   import { interests } from "pinpon-common/Interest";
   import { dads } from "./dads";
+  import { interests as userInterests } from "./stores";
 
   //
   // Import componenets
@@ -13,6 +15,25 @@
   let refreshLayout;
 
   //
+  // Interests
+
+  let selectedInterests: Interest[];
+  userInterests.subscribe((value) => {
+    selectedInterests = value;
+  });
+
+  async function loadInterests() {
+    userInterests.set([]);
+    try {
+      const shelfcopy = await dads.getShelfcopy("pinpon-interests");
+      const loadedInterests = await (
+        await fetch(`http://localhost:3132/shelfcopies/${shelfcopy}`)
+      ).text();
+      userInterests.set(loadedInterests.split(",") as Interest[]);
+    } catch (err) {}
+  }
+
+  //
   // Pinpons
 
   let pinpons: Pinpon[] = [];
@@ -21,22 +42,11 @@
     pinpons = [];
 
     try {
-      // throw new Error("tmp");
-
-      //
-      // Attempt to get a shelfcopy of pinpon-interests
-      // and load pinpons with that shelfcopy
-
-      const shelfcopy = await dads.getShelfcopy("pinpon-interests");
       const res = await fetch(
-        `http://localhost:8000/pinpons?shelfcopy=${shelfcopy}`
+        `http://localhost:8000/pinpons?interests=${selectedInterests.join(",")}`
       );
       pinpons = (await res.json()).pinpons;
     } catch (e) {
-      //
-      // Shelfcopy was not retreived
-      // load general pinpons and display a warning
-
       const res = await fetch(`http://localhost:8000/pinpons`);
       pinpons = (await res.json()).pinpons;
     }
@@ -46,7 +56,10 @@
   // Load pinpons when window is loaded
   // dads api is not available before that
 
-  window.addEventListener("load", loadPinpons);
+  window.addEventListener("load", async () => {
+    await loadInterests();
+    loadPinpons();
+  });
 </script>
 
 <div class="app">
@@ -75,7 +88,7 @@
   </main>
 
   <aside>
-    <Selector interests={[...interests]} />
+    <Selector interests={[...interests]} on:update={loadPinpons} />
   </aside>
 </div>
 
