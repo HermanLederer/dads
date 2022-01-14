@@ -19,19 +19,19 @@
     class="interest"
     class:is-selected={selected.includes(interest)}
     on:click={async () => {
-      // Update locally
-      let i = selected.indexOf(interest);
-      if (i >= 0) {
-        selected = selected.filter((e) => e != interest);
-      } else {
-        selected = [...selected, interest];
-      }
-
       // Save
       try {
-        await dads.saveToShelf("pinpon-interests", selected.join(","));
+        await dads.saveToShelf("pinpon-interests", selected.join(", "));
+
+        // Update locally
+        let i = selected.indexOf(interest);
+        if (i >= 0) {
+          selected = selected.filter((e) => e != interest);
+        } else {
+          selected = [...selected, interest];
+        }
       } catch (e) {
-        selected = selected.filter((e) => e != interest);
+        alert("Failed to save preferences")
       }
     }}>{interest}</button
   >

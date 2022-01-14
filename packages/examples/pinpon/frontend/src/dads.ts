@@ -51,7 +51,7 @@ function setupDADS() {
       return new Promise<boolean>((resolve, reject) => {
         this.reject();
 
-        this.awaitingResponse = "save-to-shelf";
+        this.awaitingResponse = "saved-to-shelf";
         this.resolve = resolve;
         this.reject = reject;
 

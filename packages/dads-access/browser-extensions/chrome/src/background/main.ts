@@ -160,6 +160,12 @@ chrome.runtime.onConnect.addListener((port) => {
                 body: msg.newData,
               }
             );
+
+            port.postMessage({
+              target: "dads-app",
+              event: "saved-to-shelf",
+              data: {},
+            });
           } catch (error) {
             port.postMessage({
               target: "dads-app",

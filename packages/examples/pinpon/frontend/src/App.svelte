@@ -6,7 +6,7 @@
   //
   // Import componenets
 
-  import Grid from "svelte-masonry/Masonry.svelte";
+  import Grid from "./lib/MasonryGrid.svelte";
   import Post from "./lib/Post.svelte";
   import Selector from "./lib/InterestSelector.svelte";
 
