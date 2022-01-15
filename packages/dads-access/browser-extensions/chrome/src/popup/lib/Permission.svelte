@@ -16,7 +16,7 @@
 
     // Get shelfcopy
     res = await fetch(
-      `${state.options.network}/shelfcopy?vault=${state.options.vault}&shelf=${state.description}`
+      `${state.options.network}/shelfcopy?vault=${state.options.vault}&shelf=${state.systemState.shelf}`
     );
     const shelfcopy = await res.text();
 
@@ -121,7 +121,7 @@
 
     background: mix($theme, $background-base, 20%);
     color: mix($theme, $foreground-base, 80%);
-
+    word-break: break-all;
     font-weight: 600;
 
     & > *:not(:last-child) {

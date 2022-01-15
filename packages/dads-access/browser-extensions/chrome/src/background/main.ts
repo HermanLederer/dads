@@ -38,6 +38,15 @@ const dads: Dads = {
   },
 };
 
+function openPopup() {
+  chrome.windows.create({
+    url: chrome.runtime.getURL("../popup/index.html"),
+    type: "popup",
+    width: 14 * 22,
+    height: 14 * 30,
+  });
+}
+
 chrome.runtime.onConnect.addListener((port) => {
   if (port.name !== "content") return;
 
@@ -108,12 +117,7 @@ chrome.runtime.onConnect.addListener((port) => {
       // TODO: Bring up the popup
       // Currently impossible to do in chrome
       // Open a new window instead
-      chrome.windows.create({
-        url: chrome.runtime.getURL("../popup/index.html"),
-        type: "popup",
-        width: 14 * 20,
-        height: 14 * 30,
-      });
+      openPopup();
     }
 
     //
@@ -153,13 +157,13 @@ chrome.runtime.onConnect.addListener((port) => {
 
           // Attempt to write to shelf
           try {
-            const res = await fetch(
-              `${n}/shelfcopy?vault=${v}&shelf=${msg.shelf}`,
-              {
-                method: "post",
-                body: msg.newData,
-              }
-            );
+            await fetch(`${n}/${v}/${msg.shelf}`, {
+              method: "post",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ newContent: msg.newData }),
+            });
 
             port.postMessage({
               target: "dads-app",
@@ -200,12 +204,7 @@ chrome.runtime.onConnect.addListener((port) => {
       // TODO: Bring up the popup
       // Currently impossible to do in chrome
       // Open a new window instead
-      chrome.windows.create({
-        url: chrome.runtime.getURL("../popup/index.html"),
-        type: "popup",
-        width: 14 * 20,
-        height: 14 * 30,
-      });
+      openPopup();
     }
 
     // else {}

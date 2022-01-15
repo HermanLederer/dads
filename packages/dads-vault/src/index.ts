@@ -15,7 +15,7 @@ const shelfcopyids = new Map<string, string>();
 
 //
 //
-// Get a new shelfcopy
+// GET a new shelfcopy
 app.get("/shelfcopy", async (req, res) => {
   const { vault, shelf, timeout } = req.query;
 
@@ -73,7 +73,7 @@ app.get("/shelfcopy", async (req, res) => {
 
 //
 //
-// Get data from a shelfcopy
+// GET data from a shelfcopy
 app.get("/shelfcopies/:uuid", async (req, res) => {
   if (shelfcopyids.has(req.params.uuid)) {
     const shelf = shelfcopyids.get(req.params.uuid);
@@ -89,6 +89,52 @@ app.get("/shelfcopies/:uuid", async (req, res) => {
 
     res.status(200).send(shelfContent?.content);
   } else res.sendStatus(404);
+});
+
+//
+//
+// POST new data to shelf
+app.post("/:vault/:shelf", async (req, res) => {
+  const { newContent } = req.body;
+
+  try {
+    const shelves = (
+      await prisma.vault.findUnique({
+        select: {
+          shelves: true,
+        },
+        where: {
+          id: req.params.vault,
+        },
+      })
+    )?.shelves;
+
+    let shelfid = null;
+    shelves?.forEach((shelf) => {
+      if (shelf.label === req.params.shelf) shelfid = shelf.id;
+    });
+
+    if (shelfid) {
+      await prisma.shelf.upsert({
+        create: {
+          id: '01',
+          content: newContent,
+          label: req.params.shelf,
+          vault_id: req.params.vault,
+        },
+        update: {
+          content: newContent,
+        },
+        where: {
+          id: shelfid,
+        },
+      });
+
+      res.sendStatus(200);
+    }
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
 
 app.listen(3132);
